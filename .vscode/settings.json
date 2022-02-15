@@ -1,3 +1,8 @@
 {
+<<<<<<< HEAD
   "liveServer.settings.port": 5501
 }
+=======
+    "liveServer.settings.port": 5501
+}
+>>>>>>> 2278254... added code from Jin and Sherin to this branch. Also removed decimals from main temp
