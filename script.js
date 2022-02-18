@@ -22,36 +22,50 @@ const sydney =
 
 // Fetching the stockholm weather
 
-let timezone;
-fetch(API_URL) //this is when we send something to BE
+fetch(bangkok) //this is when we send something to BE
   .then((res) => res.json()) //this is when we receive the data from BE
   .then((data) => {
+    //select first object from array with index 0
     const icon = data.weather[0].icon;
-    const temp = data.main.temp.toFixed(0);
+    //remove decimals from temperature
+    const temp = data.main.temp.toFixed(1);
+    const weatherDescription=data.weather[0].description;
+    const cityName=data.name;
+
     weatherContainer.innerHTML = ` 
-    
-    <h1 class="temperature" id="temperature">${temp}°C</h1>
-    <h1 class="cityToday" id="city">${data.name} </h1>
-        <h3 class="cityToday" id="city"><img src="http://openweathermap.org/img/wn/${icon}.png" alt="weather icon"/> ${data.weather[0].description} </h3>
+    <div class="temperature" id="temperature">${temp}°C</div>
+    <div class="cityToday" id="city">${cityName} </div>
+        <div class="weather-description" id="weatherDescription">${weatherDescription} </div>
         `;
 
+      
     /* sunrise & sunset */
+    const timezone = data.timezone;
     const sunriseSec = data.sys.sunrise;
+    const sunriseDate = convertSecondsToDateTimezoned(sunriseSec, timezone)
+    const sunriseReadable = convertDateToReadableHours(sunriseDate)
+    console.log(sunriseSec)
+    console.log(sunriseDate)
+    console.log(sunriseReadable)
+
     const sunsetSec = data.sys.sunset;
-    timezone = data.timezone;
-    const sunrise = convertUTCToSunTime(sunriseSec, data.timezone);
-    const sunset = convertUTCToSunTime(sunsetSec, data.timezone);
+    const sunsetDate = convertSecondsToDateTimezoned(sunsetSec, timezone)
+    const sunsetReadable = convertDateToReadableHours(sunsetDate)
+    console.log(sunriseSec)
+    console.log(sunriseDate)
+    console.log(sunsetReadable)
+
     sunContainer.innerHTML = ` 
-    <h4 class="sunrise" id="sunRise" > Sunrise  ${sunrise} </h4> 
-    <img class="sunrise-icon" src="./images/sunrise.png">
-    <h4 class="sunset" id="sunSet"> Sunset ${sunset}</h4>
-    <img class="sunset-icon" src="./images/sunset.png">`;
+    
+    <div class="sunrise" id="sunRise" > Sunrise  ${sunriseReadable} </div> 
+    <div  class="sunset" id="sunSet"> Sunset ${sunsetReadable}</div>
+    `;
   });
 
 // setting bg Image based on day/night
 if (timeInHr >= 6 && timeInHr <= 17) {
-  mainContainer.style.backgroundImage = `url(./images/day.jpg)`;
-  mainContainer.style.backgroundSize = "cover";
+  mainContainer.style.background = "linear-gradient(233deg, rgba(255,255,255,1) 16%, rgba(138,141,255,1) 100%)";
+  // mainContainer.style.backgroundSize = "cover";
 } else if (timeInHr >= 18) {
   mainContainer.style.backgroundImage = `url(./images/night.jpg)`;
   mainContainer.style.backgroundSize = "cover";
@@ -159,26 +173,12 @@ fetch(API_Weather_URL)
     }
   });
 
-function convertUTCToSunTime(UTCsec, timezone) {
-  const UTCstring = new Date(
-    (UTCsec + timezone + new Date().getTimezoneOffset() * 60) * 1000
-  ).toTimeString();
-  const timeWithSec = UTCstring.split(":");
-  return `${timeWithSec[0]}: ${timeWithSec[1]}`;
+function convertSecondsToDateTimezoned(seconds, timezone) {
+  return new Date((seconds + timezone +  new Date().getTimezoneOffset() * 60) * 1000)
 }
 
-function convertUTCToDate(UTCsec) {
-  const UTCstring = new Date(
-    (UTCsec + timezone + new Date().getTimezoneOffset() * 60) * 1000
-  ).toDateString();
-  return UTCstring;
-}
-
-function convertUTCToHours(UTCsec) {
-  const UTCstring = new Date(
-    (UTCsec + timezone + new Date().getTimezoneOffset() * 60) * 1000
-  ).getHours();
-  return UTCstring;
+function convertDateToReadableHours(date) {
+  return date.getHours() + ":" + date.getMinutes();
 }
 
 // Different cities

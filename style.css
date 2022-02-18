@@ -8,17 +8,14 @@ body {
   padding-bottom: 1rem;
 }
 .weather-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 0 10px;
-  padding: 15px;
   color: white;
   align-items: center;
+  margin-bottom: 2rem;
 }
 .main-container {
-  height: 100%;
-  width: 100%;
+  /* height: 100%;
+  width: 100%; */
+  padding: 38px;
 }
 .today {
   padding: 10px;
@@ -26,60 +23,51 @@ body {
 }
 
 .temperature {
-  font-size: 5rem;
-  padding-top: 15px;
+  font-size: 100px;
 }
 
 .cityToday {
-  font-size: 2rem;
-  padding: 10px;
+  font-size: 34px;
 }
 
 .weather-description {
-  padding: 10px;
+  font-size: 22px;
 }
 
 .sun-container {
   display: flex;
-  margin-top: 2rem;
   color: white;
-  font-size: 10px;
   justify-content: center;
+  font-size: 22px;
 }
-.sunrise-icon {
-  height: 70px;
-  width: 70px;
-}
-.sunset-icon {
-  height: 70px;
-  width: 70px;
-}
+
 .sunrise,
 .sunset {
-  margin-left: 20px;
+  width: 50%;
+}
+
+
+.button {
+  position: absolute;
+  left: 54%;
+  top: 34%
 }
 
 .weather-forecast {
   margin-left: 10px;
   margin-top: 20px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  /* grid-template-columns:1fr; */
   font-weight: 100px;
 }
 
 .weekly-weather {
-  display: flex;
-  justify-content: space-evenly;
+  /* display: flex;
+  justify-content: space-evenly; */
+  display: grid;
+    grid-template-columns: 1fr 79px 1fr 1fr;
 }
-.temperature2 {
-  padding: 30px;
-}
-.temperature-icon {
-  padding: 20px;
-}
-.weekday {
-  padding: 30px;
-}
+
 .otherCity {
   display: flex;
 }
@@ -90,20 +78,17 @@ body {
   padding: 10px;
 }
 @media only screen and (min-width: 768px) {
-  .main-container {
+  /* .main-container {
     padding: 5rem;
-    border-radius: 10px;
-  }
+  } */
   .sun-container {
-    padding: 5px;
     display: flex;
-    font-size: 30px;
   }
-  .weekly-weather {
+  /* .weekly-weather {
     display: flex;
     align-content: center;
     justify-content: flex;
-  }
+  } */
   .weather-forecast {
     font-size: 20pt;
     justify-content: center;
