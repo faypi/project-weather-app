@@ -13,6 +13,9 @@ const API_Weather_URL =
   "https://api.openweathermap.org/data/2.5/forecast?q=Stockholm,Sweden&units=metric&APPID=856500266ed2a8bc92cf454b0800d15c";
 const timeInHr = new Date().getHours();
 let timezone;
+
+
+
 fetch(API_URL) //this is when we send something to BE
   .then((res) => res.json()) //this is when we receive the data from BE
   .then((data) => {
@@ -20,7 +23,7 @@ fetch(API_URL) //this is when we send something to BE
 
     weatherContainer.innerHTML = ` 
     
-    <h1 class="temperature" id="temperature">${data.main.temp}°C</h1>
+    <h1 class="temperature" id="temperature">${Math.round(data.main.temp)}°C</h1>
     <h1 class="city" id="city">${data.name} </h1>
         <h3 class="city" id="city"><img src="http://openweathermap.org/img/wn/${icon}.png" alt="weather icon"/> ${data.weather[0].description} </h3>
         `;
@@ -123,8 +126,8 @@ fetch(API_Weather_URL)
         minTemp.push(data.main.temp_min);
         maxTemp.push(data.main.temp_max);
       });
-      const minTemperature = Math.min(...minTemp);
-      const maxTemperature = Math.max(...maxTemp);
+      const minTemperature = Math.round(Math.min(...minTemp));
+      const maxTemperature = Math.round(Math.max(...maxTemp));
       return { maxTemperature, minTemperature };
     }
 

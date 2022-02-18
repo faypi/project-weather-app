@@ -43,19 +43,21 @@ body {
   font-size: 10px;
   justify-content: center;
 }
-.sunrise-icon {
-  height: 70px;
-  width: 70px;
+
+.sunrise-icon, .sunset-icon {
+  width: 15%;
+  min-width: 50px;
+  max-width: 70px;
 }
-.sunset-icon {
-  height: 70px;
-  width: 70px;
-}
+
 .sunrise,
 .sunset {
   margin-left: 20px;
 }
 
+.weather-description-container {
+  display: flex;
+}
 .weather-forecast {
   margin-left: 10px;
   margin-top: 20px;
@@ -103,4 +105,5 @@ body {
   .temperature-icon {
     align-items: center;
   }
+
 }
