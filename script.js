@@ -35,10 +35,15 @@ fetch(API_URL) //this is when we send something to BE
     const sunrise = convertUTCToSunTime(sunriseSec, data.timezone);
     const sunset = convertUTCToSunTime(sunsetSec, data.timezone);
     sunContainer.innerHTML = ` 
-    <h4 class="sunrise" id="sunRise" > Sunrise  ${sunrise} </h4> 
+    <div class="sunrise-container">
+    <div class="sunrise" id="sunRise" > Sunrise  ${sunrise} </div> 
     <img class="sunrise-icon" src="./images/sunrise.png">
-    <h4 class="sunset" id="sunSet"> Sunset ${sunset}</h4>
-    <img class="sunset-icon" src="./images/sunset.png">`;
+    </div>
+    <div class="sunset-container">
+    <div class="sunset" id="sunSet"> Sunset ${sunset}</div>
+    <img class="sunset-icon" src="./images/sunset.png">
+    </div>
+    `;
   });
 
 // setting bg Image based on day/night
