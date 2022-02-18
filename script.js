@@ -6,23 +6,23 @@ const weatherDescription = document.getElementById("weatherDescription");
 const weatherForecast = document.getElementById("weatherForecast");
 const sunContainer = document.getElementById("sunContainer");
 const mainContainer = document.getElementById("mainContainer");
-const timeInHr = new Date().getHours();
-const API_URL =
+
+const API_WEATHER_URL =
   "https://api.openweathermap.org/data/2.5/weather?q=Stockholm,Sweden&units=metric&APPID=856500266ed2a8bc92cf454b0800d15c";
-const API_Weather_URL =
+const API_FORECAST_URL =
   "https://api.openweathermap.org/data/2.5/forecast?q=Stockholm,Sweden&units=metric&APPID=856500266ed2a8bc92cf454b0800d15c";
-const london =
+const API_WEATHER_LONDON =
   "https://api.openweathermap.org/data/2.5/weather?q=London&units=metric&APPID=856500266ed2a8bc92cf454b0800d15c";
-const dubai =
+const API_WEATHER_DUBAI =
   "https://api.openweathermap.org/data/2.5/weather?q=Dubai&units=metric&APPID=856500266ed2a8bc92cf454b0800d15c";
-const bangkok =
+const API_WEATHER_BANGKOK =
   "https://api.openweathermap.org/data/2.5/weather?q=Bangkok&units=metric&APPID=856500266ed2a8bc92cf454b0800d15c";
-const sydney =
+const API_WEATHER_SYDNEY =
   "https://api.openweathermap.org/data/2.5/weather?q=Sydney&units=metric&APPID=856500266ed2a8bc92cf454b0800d15c";
 
 // Fetching the stockholm weather
 
-fetch(bangkok) //this is when we send something to BE
+fetch(API_WEATHER_BANGKOK) //this is when we send something to BE
   .then((res) => res.json()) //this is when we receive the data from BE
   .then((data) => {
     //select first object from array with index 0
@@ -60,23 +60,25 @@ fetch(bangkok) //this is when we send something to BE
     <div class="sunrise" id="sunRise" > Sunrise  ${sunriseReadable} </div> 
     <div  class="sunset" id="sunSet"> Sunset ${sunsetReadable}</div>
     `;
+
+    const timeInLocationNow = data.dt
+    const timeInLocationDate =convertSecondsToDateTimezoned(timeInLocationNow, timezone);
+    console.log(timeInLocationDate)
+    const hoursInLocation = timeInLocationDate.getHours();
+    console.log(hoursInLocation)
+
+    if (hoursInLocation >= 6 && hoursInLocation <= 17) {
+      mainContainer.style.background = "linear-gradient(233deg, rgba(255,255,255,1) 16%, rgba(138,141,255,1) 100%)";
+      // mainContainer.style.backgroundSize = "cover";
+    } else {
+      mainContainer.style.backgroundImage = `url(./images/night.jpg)`;
+      mainContainer.style.backgroundSize = "cover";
+      mainContainer.style.color = "white";
+    } 
+
   });
 
-// setting bg Image based on day/night
-if (timeInHr >= 6 && timeInHr <= 17) {
-  mainContainer.style.background = "linear-gradient(233deg, rgba(255,255,255,1) 16%, rgba(138,141,255,1) 100%)";
-  // mainContainer.style.backgroundSize = "cover";
-} else if (timeInHr >= 18) {
-  mainContainer.style.backgroundImage = `url(./images/night.jpg)`;
-  mainContainer.style.backgroundSize = "cover";
-  mainContainer.style.color = "white";
-} else {
-  mainContainer.style.backgroundImage = `url(./images/night.jpg)`;
-  mainContainer.style.backgroundSize = "cover";
-  mainContainer.style.color = "white";
-}
-
-fetch(API_Weather_URL)
+fetch(API_FORECAST_URL)
   .then((res) => res.json())
   .then((data) => {
     const dataOfFiveDays = data.list;
@@ -183,7 +185,7 @@ function convertDateToReadableHours(date) {
 
 // Different cities
 
-fetch(london)
+fetch(API_WEATHER_LONDON)
   .then((response) => response.json())
   .then((data2) => {
     const todaysTemp = data2.main.temp_max.toFixed(0);
@@ -194,7 +196,7 @@ fetch(london)
    `;
   });
 
-fetch(dubai)
+fetch(API_WEATHER_DUBAI)
   .then((response) => response.json())
   .then((data3) => {
     const todaysTemp = data3.main.temp_max.toFixed(0);
@@ -204,7 +206,7 @@ fetch(dubai)
    <p class="city" id="dubai" >${todaysTemp}°</p>
 `;
   });
-fetch(bangkok)
+fetch(API_WEATHER_BANGKOK)
   .then((response) => response.json())
   .then((data4) => {
     const todaysTemp = data4.main.temp_max.toFixed(0);
@@ -213,7 +215,7 @@ fetch(bangkok)
     <p class="city" id="bangkok">${data4.name}</p>
    <p class="city" id="bangkok">${todaysTemp}°</p`;
   });
-fetch(sydney)
+fetch(API_WEATHER_SYDNEY)
   .then((response) => response.json())
   .then((data5) => {
     const todaysTemp = data5.main.temp_max.toFixed(0);
