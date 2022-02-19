@@ -7,7 +7,7 @@ const weatherForecast = document.getElementById("weatherForecast");
 const sunContainer = document.getElementById("sunContainer");
 const mainContainer = document.getElementById("mainContainer");
 
-const API_WEATHER_URL =
+const API_WEATHER_STOCKHOLM =
   "https://api.openweathermap.org/data/2.5/weather?q=Stockholm,Sweden&units=metric&APPID=856500266ed2a8bc92cf454b0800d15c";
 const API_FORECAST_URL =
   "https://api.openweathermap.org/data/2.5/forecast?q=Stockholm,Sweden&units=metric&APPID=856500266ed2a8bc92cf454b0800d15c";
@@ -22,23 +22,24 @@ const API_WEATHER_SYDNEY =
 
 // Fetching the stockholm weather
 
-fetch(API_WEATHER_BANGKOK) //this is when we send something to BE
+fetch(API_WEATHER_STOCKHOLM) //this is when we send something to BE
   .then((res) => res.json()) //this is when we receive the data from BE
   .then((data) => {
     //select first object from array with index 0
     const icon = data.weather[0].icon;
     //remove decimals from temperature
     const temp = data.main.temp.toFixed(1);
-    const weatherDescription=data.weather[0].description;
-    const cityName=data.name;
+    const weatherDescription = data.weather[0].description;
+    const cityName = data.name;
 
     weatherContainer.innerHTML = ` 
     <div class="temperature" id="temperature">${temp}°C</div>
+    <div id="iconDayOrNight"></div>
     <div class="cityToday" id="city">${cityName} </div>
-        <div class="weather-description" id="weatherDescription">${weatherDescription} </div>
+    <div class="weather-description" id="weatherDescription">${weatherDescription} </div>
         `;
 
-      
+
     /* sunrise & sunset */
     const timezone = data.timezone;
     const sunriseSec = data.sys.sunrise;
@@ -62,23 +63,28 @@ fetch(API_WEATHER_BANGKOK) //this is when we send something to BE
     `;
 
     const timeInLocationNow = data.dt
-    const timeInLocationDate =convertSecondsToDateTimezoned(timeInLocationNow, timezone);
+    const timeInLocationDate = convertSecondsToDateTimezoned(timeInLocationNow, timezone);
     console.log(timeInLocationDate)
     const hoursInLocation = timeInLocationDate.getHours();
     console.log(hoursInLocation)
-
+    const iconDayOrNight = document.getElementById("iconDayOrNight")
+    console.log(iconDayOrNight)
     if (hoursInLocation >= 6 && hoursInLocation <= 17) {
       mainContainer.style.background = "linear-gradient(233deg, rgba(255,255,255,1) 16%, rgba(138,141,255,1) 100%)";
-      // mainContainer.style.backgroundSize = "cover";
+      iconDayOrNight.innerHTML= `
+      <img src="/images/sun.png" alt="daytime">
+      `    
     } else {
-      mainContainer.style.backgroundImage = `url(./images/night.jpg)`;
-      mainContainer.style.backgroundSize = "cover";
-      mainContainer.style.color = "white";
-    } 
+      mainContainer.style.background = "linear-gradient(180deg, #242552, #7a7dc9)";
+      iconDayOrNight.innerHTML= `
+      <img src="/images/moon.png" alt="daytime">
+      `
+
+    }
 
   });
 
-fetch(API_FORECAST_URL)
+fetch(API_FORECAST_STOCKHOLM)
   .then((res) => res.json())
   .then((data) => {
     const dataOfFiveDays = data.list;
@@ -176,7 +182,7 @@ fetch(API_FORECAST_URL)
   });
 
 function convertSecondsToDateTimezoned(seconds, timezone) {
-  return new Date((seconds + timezone +  new Date().getTimezoneOffset() * 60) * 1000)
+  return new Date((seconds + timezone + new Date().getTimezoneOffset() * 60) * 1000)
 }
 
 function convertDateToReadableHours(date) {
